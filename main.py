@@ -1,6 +1,6 @@
 from selenium import webdriver
 from time import sleep
-from secrets import username,pw
+
 
 class InstaBot:
     def __init__(self, username, pw):
@@ -12,9 +12,10 @@ class InstaBot:
             .send_keys(username)
         self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
             .send_keys(pw)
+        sleep(2)
         self.driver.find_element_by_xpath('//button[@type="submit"]')\
             .click()
-        sleep(10)
+        sleep(6)
     
 
         self.driver.find_element_by_xpath("//button[contains(text(), 'Enviar código de segurança')]").click()
@@ -65,15 +66,19 @@ class InstaBot:
         self.driver.find_element_by_xpath("//a[contains(@href,'/following')]")\
             .click()
         following = self._get_names()
+        print("Following: ", following)
         self.driver.find_element_by_xpath("//a[contains(@href,'/followers')]")\
             .click()
         followers = self._get_names()
+        print("Followers: ", followers)
         not_following_back = [user for user in following if user not in followers]
         print("Não estão me seguindo de volta:", not_following_back)
-        for user in not_following_back:
-            sleep(5)
-            self.unfollow(user)
-            sleep(5)
+        for user2 in not_following_back:
+            print(user)
+            # sleep(2)
+            # self.unfollow(user)
+            # sleep(2)
+        print("Processo finalizado com sucesso!")
 
     
 
@@ -81,8 +86,8 @@ class InstaBot:
     # private method
     def _get_names(self):
         sleep(3)
-        #sugs = self.driver.find_element_by_xpath('//h4[contains(text(), Sugestões)]')
-        #self.driver.execute_script('arguments[0].scrollIntoView()',sugs)
+        sugs = self.driver.find_element_by_xpath('//h4[contains(text(), Sugestões)]')
+        self.driver.execute_script('arguments[0].scrollIntoView()',sugs)
         sleep(2)
         scroll_box = self.driver.find_element_by_xpath("/html/body/div[4]/div/div[2]")
         
@@ -104,7 +109,8 @@ class InstaBot:
 
         
 
-            
-
+print ("Insira seu username de login (Nao pode ser o email)")
+username = input("login: ")
+pw = input("Agora sua senha: ")
 bot = InstaBot(username,pw)
 bot.get_unfollowers()
