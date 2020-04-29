@@ -8,43 +8,53 @@ class InstaBot:
         self.username = username
         self.driver.get('https://instagram.com')
         sleep(2)
-        if self.driver.find_element_by_xpath("//a[contains(text(), 'Conecte-se')]"):
-            self.driver.find_element_by_xpath("//a[contains(text(), 'Conecte-se')]").click()
-            sleep(2)
+        self.driver.find_element_by_xpath("//input[@name=\"username\"]")\
+            .send_keys(username)
+        self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
+            .send_keys(pw)
+        self.driver.find_element_by_xpath('//button[@type="submit"]')\
+            .click()
+        sleep(10)
+    
+
+        self.driver.find_element_by_xpath("//button[contains(text(), 'Enviar código de segurança')]").click()
+        sleep(5)
+        sleep(60)
+        self.driver.find_element_by_xpath("//button[contains(text(), 'Agora não')]").click()
+        sleep(5)
+
+        # if self.driver.find_element_by_xpath("//a[contains(text(), 'Conecte-se')]"):
+        #     self.driver.find_element_by_xpath("//a[contains(text(), 'Conecte-se')]").click()
+        #     sleep(2)
             
-            self.driver.find_element_by_xpath("//input[@name=\"username\"]")\
-                .send_keys(username)
-            self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
-                .send_keys(pw)
-            self.driver.find_element_by_xpath('//button[@type="submit"]')\
-                .click()
-            sleep(4)
-            self.driver.find_element_by_xpath("//button[contains(text(), 'Agora não')]").click()
-            sleep(5)
-        else:
-            self.driver.find_element_by_xpath("//input[@name=\"username\"]")\
-                .send_keys(username)
-            self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
-                .send_keys(pw)
-            self.driver.find_element_by_xpath('//button[@type="submit"]')\
-                .click()
-            sleep(4)
-            self.driver.find_element_by_xpath("//button[contains(text(), 'Agora não')]").click()
-            sleep(5)
+        #     self.driver.find_element_by_xpath("//input[@name=\"username\"]")\
+        #         .send_keys(username)
+        #     self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
+        #         .send_keys(pw)
+        #     self.driver.find_element_by_xpath('//button[@type="submit"]')\
+        #         .click()
+        #     sleep(4)
+        #     self.driver.find_element_by_xpath("//button[contains(text(), 'Agora não')]").click()
+        #     sleep(5)
+        # else:
 
             
     def unfollow(self, user):
         print('Unfollowing->', user)
-        sleep(2)
+        sleep(5)
         self.driver.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[2]/input')\
             .send_keys(user)
-        sleep(2)
+        sleep(5)
+        print('Clicando no perfil ->', user)
         self.driver.find_element_by_xpath("//a[contains(@href,'/{}/')]".format(user))\
             .click()
-        sleep(3)
-        self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/div[1]/div[1]/span/span[1]/button').click()
-        sleep(2)
+        sleep(5)
+        print('Deixando de seguir: ', user)
+        self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/div[1]/div[2]/span/span[1]/button').click()
+    
+        sleep(5)
         self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[3]/button[1]').click()
+        print('Deixou de seguir: ', user)
 
 
     def get_unfollowers(self):
@@ -61,8 +71,9 @@ class InstaBot:
         not_following_back = [user for user in following if user not in followers]
         print("Não estão me seguindo de volta:", not_following_back)
         for user in not_following_back:
+            sleep(5)
             self.unfollow(user)
-            sleep(2)
+            sleep(5)
 
     
 
